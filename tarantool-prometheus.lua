@@ -335,7 +335,7 @@ end
 local function collect()
     local registry = get_registry()
 
-    return table.concat(registry:collect(), '\n')
+    return table.concat(registry:collect(), '\n')..'\n'
 end
 
 local function clear()
