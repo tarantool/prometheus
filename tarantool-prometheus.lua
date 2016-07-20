@@ -338,6 +338,14 @@ local function collect()
     return table.concat(registry:collect(), '\n')..'\n'
 end
 
+local function collect_http()
+    return {
+        status = 200,
+        headers = { ['content-type'] = 'text/plain; charset=utf8' },
+        body = collect()
+    }
+end
+
 local function clear()
     registry = get_registry()
     registry.collectors = {}
@@ -347,4 +355,5 @@ return {counter=counter,
         gauge=gauge,
         histogram=histogram,
         collect=collect,
+        collect_http=collect_http,
         clear=clear}
