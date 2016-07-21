@@ -1,4 +1,4 @@
-FROM tarantool:1.7
+FROM tarantool/tarantool:1.7
 
-COPY *.lua /opt/tarantool/
+COPY example.lua /opt/tarantool/
 CMD ["tarantool", "/opt/tarantool/example.lua"]
