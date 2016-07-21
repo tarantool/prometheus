@@ -1,12 +1,12 @@
 package = 'tarantool-prometheus'
 version = 'scm-1'
 source  = {
-    url    = 'git://github.com/tarantool/tarantool-prometheus.git',
+    url    = 'git://github.com/tarantool/prometheus.git',
     branch = 'master',
 }
 description = {
     summary  = 'Prometheus library to collect metrics from Tarantool',
-    homepage = 'https://github.com/tarantool/tarantool-prometheus.git',
+    homepage = 'https://github.com/tarantool/prometheus.git',
     license  = 'MIT',
 }
 dependencies = {
