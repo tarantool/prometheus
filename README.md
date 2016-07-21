@@ -13,7 +13,7 @@ The Summary metric is not implemented yet. It may be implemented in future.
 
 ## Getting started
 
-The easiest way is, of course, to use [one of the official Docker images](https://hub.docker.com/r/tarantool/tarantool/), which already contain the prometheus collector. But if you run on a regular Linux distro, first install the library:
+The easiest way is, of course, to use [one of the official Docker images](https://hub.docker.com/r/tarantool/tarantool/), which already contain the prometheus collector. But if you run on a regular Linux distro, first install the library from [Tarantool Rocks server](http://rocks.tarantool.org):
 
 ```bash
 $ luarocks install tarantool-prometheus
