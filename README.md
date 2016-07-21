@@ -63,7 +63,7 @@ This sets current value of the metric.
 httpd:route( { path = '/metrics' }, prometheus.collect_http)
 ```
 
-This exposes metrics over HTTP text/plain protocol on http://localhost:8080/metrics for Prometheus to collect. Prometheus periodically polls this endpoint and stores results in its time series database.
+This exposes metrics over HTTP text/plain protocol on [http://localhost:8080/metrics](http://localhost:8080/metrics) for Prometheus to collect. Prometheus periodically polls this endpoint and stores results in its time series database.
 
 ## A more detailed example
 
@@ -76,7 +76,7 @@ $ docker build -t tarantool-prometheus .
 $ docker run --rm -t -i -p8080:8080 tarantool-prometheus
 ```
 
-Then visit http://localhost:8080/metrics and refresh the page a few times to see metrics change.
+Then visit [http://localhost:8080/metrics](http://localhost:8080/metrics) and refresh the page a few times to see metrics change.
 
 ## Usage
 
