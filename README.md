@@ -171,6 +171,18 @@ Records a value to histogram created by `prometheus.histogram()`.
 * `value` is a value to record. Optional. Defaults to `0`.
 * `labels` is an array of label values. Optional.
 
+### collect()
+
+Presents all metrics in a text format compatible with Prometheus. This can be called either by `http.server` callback or by [Tarantool nginx_upstream_module](https://github.com/tarantool/nginx_upstream_module)
+
+### collect_http()
+
+Convenience function specially for one-line registration in Tarantool `http.server`, as follows:
+
+```lua
+httpd:route( { path = '/metrics' }, prometheus.collect_http)
+```
+
 ## Development
 
 Contributions are welcome. Report issues and feature requests at https://github.com/tarantool/tarantool-prometheus/issues
