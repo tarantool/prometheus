@@ -14,6 +14,7 @@ function Registry.new()
     local obj = {}
     setmetatable(obj, Registry)
     obj.collectors = {}
+    obj.callbacks = {}
     return obj
 end
 
@@ -32,6 +33,10 @@ function Registry:unregister(collector)
 end
 
 function Registry:collect()
+    for _, registered_callback in ipairs(self.callbacks) do
+        registered_callback()
+    end
+
     local result = {}
     for _, collector in pairs(self.collectors) do
         for _, metric in ipairs(collector:collect()) do
@@ -39,6 +44,18 @@ function Registry:collect()
         end
     end
     return result
+end
+
+function Registry:register_callback(callback)
+    local found = false
+    for _, registered_callback in ipairs(self.callbacks) do
+        if registered_callback == calback then
+            found = true
+        end
+    end
+    if not found then
+        table.insert(self.callbacks, callback)
+    end
 end
 
 local function get_registry()
@@ -53,6 +70,11 @@ local function register(collector)
     registry:register(collector)
 
     return collector
+end
+
+local function register_callback(callback)
+    local registry = get_registry()
+    registry:register_callback(callback)
 end
 
 function zip(lhs, rhs)
@@ -347,8 +369,15 @@ local function collect_http()
 end
 
 local function clear()
-    registry = get_registry()
+    local registry = get_registry()
     registry.collectors = {}
+    registry.callbacks = {}
+end
+
+local function init()
+    local registry = get_registry()
+    local tarantool_metrics = require('tarantool-metrics')
+    registry:register_callback(tarantool_metrics.measure_tarantool_metrics)
 end
 
 return {counter=counter,
@@ -356,4 +385,5 @@ return {counter=counter,
         histogram=histogram,
         collect=collect,
         collect_http=collect_http,
-        clear=clear}
+        clear=clear,
+        init=init}

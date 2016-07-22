@@ -5,6 +5,7 @@ prometheus = require('tarantool-prometheus')
 fiber = require('fiber')
 
 box.cfg{}
+prometheus.init()
 
 httpd = http.new('0.0.0.0', 8080)
 
