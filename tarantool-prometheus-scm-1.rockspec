@@ -16,6 +16,7 @@ build = {
     type = 'builtin',
 
     modules = {
+        ['tarantool-prometheus.tarantool-metrics'] = 'tarantool-metrics.lua',
         ['tarantool-prometheus'] = 'tarantool-prometheus.lua'
     }
 }

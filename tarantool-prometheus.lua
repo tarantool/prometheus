@@ -42,6 +42,7 @@ function Registry:collect()
         for _, metric in ipairs(collector:collect()) do
             table.insert(result, metric)
         end
+        table.insert(result, '')
     end
     return result
 end
@@ -376,7 +377,7 @@ end
 
 local function init()
     local registry = get_registry()
-    local tarantool_metrics = require('tarantool-metrics')
+    local tarantool_metrics = require('tarantool-prometheus.tarantool-metrics')
     registry:register_callback(tarantool_metrics.measure_tarantool_metrics)
 end
 
