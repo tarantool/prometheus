@@ -24,6 +24,12 @@ local uptime_seconds = prometheus.gauge(
     'tarantool_uptime_seconds',
     'Number of seconds since the server started')
 
+local tuples_total = prometheus.gauge(
+    'tarantool_space_tuples_total',
+    'Total number of tuples in a space',
+    {'space_name'})
+
+
 local function measure_tarantool_memory_usage()
     local slabs = box.slab.info()
     local memory_limit = slabs.quota_size
@@ -52,10 +58,22 @@ local function measure_tarantool_uptime()
     uptime_seconds:set(box.info.uptime)
 end
 
+local function measure_tarantool_space_stats()
+    for _, space in box.space._space:pairs() do
+        local space_name = space[3]
+
+        if string.sub(space_name, 1,1) ~= '_' then
+            tuples_total:set(box.space[space_name]:len(), {space_name})
+        end
+    end
+
+end
+
 local function measure_tarantool_metrics()
     measure_tarantool_memory_usage()
     measure_tarantool_request_stats()
     measure_tarantool_uptime()
+    measure_tarantool_space_stats()
 end
 
 return {measure_tarantool_metrics=measure_tarantool_metrics}
