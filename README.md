@@ -61,6 +61,7 @@ To report the arena size, you can write the following code:
 
 ```lua
 prometheus = require('tarantool-prometheus')
+http = require('http.server')
 fiber = require('fiber')
 
 box.cfg{}
