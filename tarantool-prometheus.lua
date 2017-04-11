@@ -318,7 +318,7 @@ function Histogram:collect()
         labels[#labels+1] = {le="0"}
         for i, bucket in ipairs(self.buckets) do
             labels[#labels] = {"le", metric_to_string(bucket)}
-            str = prefix.."_bucket"..labels_to_string(labels)..
+            local str = prefix.."_bucket"..labels_to_string(labels)..
                 ' '..metric_to_string(observation[i])
             table.insert(result, str)
         end
