@@ -48,8 +48,11 @@ Linux distro, first install the library from
 [Tarantool Rocks server](http://rocks.tarantool.org):
 
 ```bash
-$ luarocks install prometheus
+$ tarantoolctl rocks install prometheus
 ```
+
+This will install the module to the `.rocks` under your current working directory.
+
 ### Basic examples
 
 To report the arena size, you can write the following code:
