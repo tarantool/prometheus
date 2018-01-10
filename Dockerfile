@@ -1,5 +1,14 @@
 FROM tarantool/tarantool:1.7
 
-COPY tarantool-prometheus.lua /opt/tarantool/
-COPY example.lua /opt/tarantool/
+COPY . /opt/tarantool/
+
+WORKDIR /opt/tarantool
+
+RUN set -x \
+    && apk add --no-cache --virtual .build-deps \
+       git\
+    && tarantoolctl rocks make rockspecs/prometheus-scm-1.rockspec \
+    && : "---------- remove build deps ----------" \
+    && apk del .build-deps
+
 CMD ["tarantool", "/opt/tarantool/example.lua"]

@@ -378,7 +378,7 @@ end
 
 local function init()
     local registry = get_registry()
-    local tarantool_metrics = require('tarantool-prometheus.tarantool-metrics')
+    local tarantool_metrics = require('prometheus.tarantool-metrics')
     registry:register_callback(tarantool_metrics.measure_tarantool_metrics)
 end
 

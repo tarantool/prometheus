@@ -48,14 +48,14 @@ Linux distro, first install the library from
 [Tarantool Rocks server](http://rocks.tarantool.org):
 
 ```bash
-$ luarocks install tarantool-prometheus
+$ luarocks install prometheus
 ```
 ### Basic examples
 
 To report the arena size, you can write the following code:
 
 ```lua
-prometheus = require('tarantool-prometheus')
+prometheus = require(prometheus')
 http = require('http.server')
 fiber = require('fiber')
 
@@ -115,8 +115,8 @@ of this repo. It demonstrates the usage of each of the 3 metric types.
 To run it with Docker, you can do as follows:
 
 ``` bash
-$ docker build -t tarantool-prometheus .
-$ docker run --rm -t -i -p8080:8080 tarantool-prometheus
+$ docker build -t prometheus .
+$ docker run --rm -t -i -p8080:8080 prometheus
 ```
 
 Then visit [http://localhost:8080/metrics](http://localhost:8080/metrics) and
@@ -234,7 +234,7 @@ httpd:route( { path = '/metrics' }, prometheus.collect_http)
 ## Development
 
 Contributions are welcome. Report issues and feature requests at
-https://github.com/tarantool/tarantool-prometheus/issues
+https://github.com/tarantool/prometheus/issues
 
 To run tests, do:
 

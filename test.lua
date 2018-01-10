@@ -1,47 +1,46 @@
 #!/usr/bin/env tarantool
 
-luaunit = require('luaunit')
-prometheus = require('tarantool-prometheus')
+local luaunit = require('luaunit')
+local prometheus = require('prometheus')
 
+local TestPrometheus = {}
 
-TestPrometheus = {}
-
-function TestPrometheus:tearDown()
+function TestPrometheus.tearDown()
     prometheus.clear()
 end
 
-function TestPrometheus:testCounterNegativeValue()
-    c = prometheus.counter("counter")
+function TestPrometheus.testCounterNegativeValue()
+    local c = prometheus.counter("counter")
     luaunit.assertErrorMsgContains("should not be negative", c.inc, c, -1)
 end
 
-function TestPrometheus:testLabelNames()
-    c = prometheus.counter("counter", "", {'a1', 'foo', "var"})
+function TestPrometheus.testLabelNames()
+    local c = prometheus.counter("counter", "", {'a1', 'foo', "var"})
     c:inc(1, {1, '2', 'q4'})
 
-    r = c:collect()
+    local r = c:collect()
     luaunit.assertEquals(r[3], 'counter{a1="1",foo="2",var="q4"} 1')
 end
 
-function TestPrometheus:testLabelEscape()
-    c = prometheus.counter("counter", "", {'a1', 'foo', "var"})
+function TestPrometheus.testLabelEscape()
+    local c = prometheus.counter("counter", "", {'a1', 'foo', "var"})
     c:inc(1, {'"', '\\a', '\n'})
 
-    r = c:collect()
+    local r = c:collect()
     luaunit.assertEquals(r[3], 'counter{a1="\\"",foo="\\\\a",var="\\n"} 1')
 end
 
-function TestPrometheus:testHelpEscape()
-    c = prometheus.counter("counter", "some\" escaped\\strings\n")
+function TestPrometheus.testHelpEscape()
+    local c = prometheus.counter("counter", "some\" escaped\\strings\n")
     c:inc(1, {'"', '\\a', '\n'})
 
-    r = c:collect()
+    local r = c:collect()
     luaunit.assertEquals(r[1], '# HELP counter some\\" escaped\\\\strings\\n')
 end
 
-function TestPrometheus:testCounters()
-    first = prometheus.counter("counter1", "", {"a", "b"})
-    second = prometheus.counter("counter2", "", {"a", "b"})
+function TestPrometheus.testCounters()
+    local first = prometheus.counter("counter1", "", {"a", "b"})
+    local second = prometheus.counter("counter2", "", {"a", "b"})
 
     first:inc()
     first:inc(4)
@@ -50,7 +49,7 @@ function TestPrometheus:testCounters()
     second:inc(3, {"v1", "v3"})
     second:inc(2, {"v1", "v3"})
 
-    r = first:collect()
+    local r = first:collect()
     luaunit.assertEquals(r[1], "# HELP counter1 ")
     luaunit.assertEquals(r[2], "# TYPE counter1 counter")
     luaunit.assertEquals(r[3], "counter1 5")
@@ -64,9 +63,9 @@ function TestPrometheus:testCounters()
 
 end
 
-function TestPrometheus:testGauge()
-    first = prometheus.gauge("gauge1", "", {"a", "b"})
-    second = prometheus.gauge("gauge2", "", {"a", "b"})
+function TestPrometheus.testGauge()
+    local first = prometheus.gauge("gauge1", "", {"a", "b"})
+    local second = prometheus.gauge("gauge2", "", {"a", "b"})
 
     first:inc()
     first:inc(4)
@@ -77,6 +76,8 @@ function TestPrometheus:testGauge()
     second:inc(3, {"v1", "v3"})
     second:dec(1, {"v1", "v3"})
     second:inc(0, {"v1", "v3"})
+
+    local r
 
     r = first:collect()
     luaunit.assertEquals(r[1], "# HELP gauge1 ")
@@ -92,8 +93,10 @@ function TestPrometheus:testGauge()
 
 end
 
-function TestPrometheus:testSpecialValues()
-    gauge = prometheus.gauge("gauge")
+function TestPrometheus.testSpecialValues()
+    local gauge = prometheus.gauge("gauge")
+
+    local r
 
     gauge:set(math.huge)
     r = gauge:collect()
@@ -110,10 +113,10 @@ end
 
 
 
-function TestPrometheus:testHistogram()
-    hist1 = prometheus.histogram("l1", "Histogram 1")
-    hist2 = prometheus.histogram("l2", "Histogram 2", {"var", "site"}, {0.1, 0.2})
-    hist3 = prometheus.histogram("l3", "Histogram 3", {})
+function TestPrometheus.testHistogram()
+    local hist1 = prometheus.histogram("l1", "Histogram 1")
+    local hist2 = prometheus.histogram("l2", "Histogram 2", {"var", "site"}, {0.1, 0.2})
+    local hist3 = prometheus.histogram("l3", "Histogram 3", {})
 
     hist1:observe(0.35)
     hist1:observe(0.9)
@@ -124,7 +127,7 @@ function TestPrometheus:testHistogram()
     hist2:observe(0.15, {"ok", "site1"})
     hist2:observe(0.15, {"ok", "site2"})
 
-    r = hist1:collect()
+    local r = hist1:collect()
     luaunit.assertEquals(r[1], "# HELP l1 Histogram 1")
     luaunit.assertEquals(r[2], "# TYPE l1 histogram")
     luaunit.assertEquals(r[3], 'l1_bucket{le="0.005"} 0')
@@ -161,13 +164,13 @@ function TestPrometheus:testHistogram()
     luaunit.assertEquals(r[3], nil)
 end
 
-function TestPrometheus:testHistogramUnorderedBuckets()
-    hist = prometheus.histogram("l2", "Histogram 2", {}, {0.2, 0.1, 0.5})
+function TestPrometheus.testHistogramUnorderedBuckets()
+    local hist = prometheus.histogram("l2", "Histogram 2", {}, {0.2, 0.1, 0.5})
 
     hist:observe(0.15)
     hist:observe(0.4)
 
-    r = hist:collect()
+    local r = hist:collect()
     luaunit.assertEquals(r[3], 'l2_bucket{le="0.1"} 0')
     luaunit.assertEquals(r[4], 'l2_bucket{le="0.2"} 1')
     luaunit.assertEquals(r[5], 'l2_bucket{le="0.5"} 2')

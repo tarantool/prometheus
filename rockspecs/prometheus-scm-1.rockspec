@@ -1,4 +1,4 @@
-package = 'tarantool-prometheus'
+package = 'prometheus'
 version = 'scm-1'
 source  = {
     url    = 'git://github.com/tarantool/prometheus.git',
@@ -16,7 +16,7 @@ build = {
     type = 'builtin',
 
     modules = {
-        ['tarantool-prometheus.tarantool-metrics'] = 'tarantool-metrics.lua',
-        ['tarantool-prometheus'] = 'tarantool-prometheus.lua'
+        ['prometheus.tarantool-metrics'] = 'tarantool-metrics.lua',
+        ['prometheus'] = 'prometheus.lua'
     }
 }

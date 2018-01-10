@@ -1,7 +1,7 @@
 #!/usr/bin/env tarantool
 -- luacheck: globals box
 
-local prometheus = require('tarantool-prometheus')
+local prometheus = require('prometheus')
 
 local memory_limit_bytes = prometheus.gauge(
     'tarantool_memory_limit_bytes',
