@@ -1,4 +1,5 @@
 #!/usr/bin/env tarantool
+-- luacheck: globals box
 
 local prometheus = require('tarantool-prometheus')
 

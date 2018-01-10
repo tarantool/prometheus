@@ -1,4 +1,5 @@
 -- vim: ts=2:sw=2:sts=2:expandtab
+-- luacheck: globals box
 
 local INF = math.huge
 local NAN = math.huge * 0
@@ -50,7 +51,7 @@ end
 function Registry:register_callback(callback)
     local found = false
     for _, registered_callback in ipairs(self.callbacks) do
-        if registered_callback == calback then
+        if registered_callback == callback then
             found = true
         end
     end
@@ -78,7 +79,7 @@ local function register_callback(callback)
     registry:register_callback(callback)
 end
 
-function zip(lhs, rhs)
+local function zip(lhs, rhs)
     if lhs == nil or rhs == nil then
         return {}
     end
@@ -144,8 +145,8 @@ function Counter.new(name, help, labels)
 end
 
 function Counter:inc(num, label_values)
-    local num = num or 1
-    local label_values = label_values or {}
+    num = num or 1
+    label_values = label_values or {}
     if num < 0 then
         error("Counter increment should not be negative")
     end
@@ -198,8 +199,8 @@ function Gauge.new(name, help, labels)
 end
 
 function Gauge:inc(num, label_values)
-    local num = num or 1
-    local label_values = label_values or {}
+    num = num or 1
+    label_values = label_values or {}
     local key = table.concat(label_values, '\0')
     local old_value = self.observations[key] or 0
     self.observations[key] = old_value + num
@@ -207,8 +208,8 @@ function Gauge:inc(num, label_values)
 end
 
 function Gauge:dec(num, label_values)
-    local num = num or 1
-    local label_values = label_values or {}
+    num = num or 1
+    label_values = label_values or {}
     local key = table.concat(label_values, '\0')
     local old_value = self.observations[key] or 0
     self.observations[key] = old_value - num
@@ -216,8 +217,8 @@ function Gauge:dec(num, label_values)
 end
 
 function Gauge:set(num, label_values)
-    local num = num or 0
-    local label_values = label_values or {}
+    num = num or 0
+    label_values = label_values or {}
     local key = table.concat(label_values, '\0')
     self.observations[key] = num
     self.label_values[key] = label_values
@@ -273,11 +274,11 @@ function Histogram.new(name, help, labels,
 end
 
 function Histogram:observe(num, label_values)
-    local num = num or 0
-    local label_values = label_values or {}
+    num = num or 0
+    label_values = label_values or {}
     local key = table.concat(label_values, '\0')
 
-    local obs = nil
+    local obs
     if self.observations[key] == nil then
         obs = {}
         for i=1, #self.buckets do
