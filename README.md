@@ -1,9 +1,4 @@
-<a href="http://tarantool.org">
-	<img src="https://avatars2.githubusercontent.com/u/2344919?v=2&s=250" align="right">
-</a>
-<!--a href="https://travis-ci.org/tarantool/tarantool-prometheus">
-	<img src="https://travis-ci.org/tarantool/tarantool-prometheus.png?branch=master" align="right">
-</a-->
+[![Build Status](https://travis-ci.org/tarantool/prometheus.svg?branch=master)](https://travis-ci.org/tarantool/prometheus)
 
 # Prometheus metric collector for Tarantool
 
