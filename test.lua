@@ -3,7 +3,7 @@
 local luaunit = require('luaunit')
 local prometheus = require('prometheus')
 
-local TestPrometheus = {}
+TestPrometheus = {}
 
 function TestPrometheus.tearDown()
     prometheus.clear()
