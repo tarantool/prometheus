@@ -1,0 +1,3 @@
+FROM tarantool/tarantool:1.7
+
+COPY *.lua /opt/tarantool/
