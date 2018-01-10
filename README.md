@@ -58,7 +58,7 @@ This will install the module to the `.rocks` under your current working director
 To report the arena size, you can write the following code:
 
 ```lua
-prometheus = require(prometheus')
+prometheus = require('prometheus')
 http = require('http.server')
 fiber = require('fiber')
 
