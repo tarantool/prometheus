@@ -378,10 +378,8 @@ end
 
 local function init()
     local registry = get_registry()
-    if type(box.cfg) ~= 'function' then
-        local tarantool_metrics = require('prometheus.tarantool-metrics')
-        registry:register_callback(tarantool_metrics.measure_tarantool_metrics)
-    end
+    local tarantool_metrics = require('prometheus.tarantool-metrics')
+    registry:register_callback(tarantool_metrics.measure_tarantool_metrics)
 end
 
 return {counter=counter,
