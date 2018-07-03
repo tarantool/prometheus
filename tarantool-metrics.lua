@@ -71,10 +71,12 @@ local function measure_tarantool_space_stats()
 end
 
 local function measure_tarantool_metrics()
-    measure_tarantool_memory_usage()
-    measure_tarantool_request_stats()
-    measure_tarantool_uptime()
-    measure_tarantool_space_stats()
+    if type(box.cfg) ~= 'function' then
+        measure_tarantool_memory_usage()
+        measure_tarantool_request_stats()
+        measure_tarantool_uptime()
+        measure_tarantool_space_stats()
+    end
 end
 
 return {measure_tarantool_metrics=measure_tarantool_metrics}
