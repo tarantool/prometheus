@@ -326,9 +326,9 @@ function Histogram:collect()
         table.remove(labels, #labels)
 
         table.insert(result,
-                     prefix.."_sum"..labels_to_string(labels)..' '..self.sums[key])
+                     prefix.."_sum"..labels_to_string(labels)..' '..tostring(self.sums[key]):gsub('ULL$', ''))
         table.insert(result,
-                     prefix.."_count"..labels_to_string(labels)..' '..self.counts[key])
+                     prefix.."_count"..labels_to_string(labels)..' '..tostring(self.counts[key]):gsub('ULL$', ''))
     end
 
     return result
