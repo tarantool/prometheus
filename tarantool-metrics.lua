@@ -30,6 +30,14 @@ local tuples_total = prometheus.gauge(
     'Total number of tuples in a space',
     {'space_name'})
 
+local replication_lag = prometheus.gauge(
+    'tarantool_replication_lag',
+    'The time difference between the instance and the master',
+    {'uuid'})
+local replication_state_normal = prometheus.gauge(
+    'tarantool_is_replication_healthy',
+    'Is replication healthy?')
+
 
 local function measure_tarantool_memory_usage()
     local slabs = box.slab.info()
@@ -67,7 +75,24 @@ local function measure_tarantool_space_stats()
             tuples_total:set(box.space[space_name]:len(), {space_name})
         end
     end
+end
 
+local function measure_tarantool_replication_lag()
+    local idle = 0
+
+    for _, replica in ipairs(box.info.replication) do
+        if replica.upstream ~= nil then
+            replication_lag:set(replica.upstream.lag, { replica.uuid })
+            if replica.upstream.idle > idle then
+                idle = replica.upstream.idle
+            end
+        end
+    end
+
+    if idle ~= 0 then
+        local replication_timeout = box.cfg.replication_timeout
+        replication_state_normal:set(idle <= replication_timeout)
+    end
 end
 
 local function measure_tarantool_metrics()
@@ -76,6 +101,7 @@ local function measure_tarantool_metrics()
         measure_tarantool_request_stats()
         measure_tarantool_uptime()
         measure_tarantool_space_stats()
+        measure_tarantool_replication_lag()
     end
 end
 
