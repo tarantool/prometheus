@@ -91,7 +91,11 @@ local function measure_tarantool_replication_lag()
 
     if idle ~= 0 then
         local replication_timeout = box.cfg.replication_timeout
-        replication_state_normal:set(idle <= replication_timeout)
+        if idle <= replication_timeout then
+            replication_state_normal:set(1)
+        else
+            replication_state_normal:set(0)
+        end
     end
 end
 
