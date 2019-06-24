@@ -1,3 +1,7 @@
+# DEPRECATED
+
+### Please note, this project is deprecated and no longer being maintained, please use [metrics/prometheus](https://github.com/tarantool/metrics/tree/master/metrics/plugins/prometheus).
+
 [![Build Status](https://travis-ci.org/tarantool/prometheus.svg?branch=master)](https://travis-ci.org/tarantool/prometheus)
 
 # Prometheus metric collector for Tarantool
